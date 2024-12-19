@@ -318,8 +318,7 @@ function syntaxHighlightPython(code) {
             }
             return items;
           }
-          console.log(`http://localhost:8000/evaluation_results/${currentModel}_temp${currentTemp}_${currentSetting}.json`);
-          fetch(`http://localhost:8000/evaluation_results/${currentModel}_temp${currentTemp}_${currentSetting}.json`)
+          fetch(`./evaluation_results/${currentModel}_temp${currentTemp}_${currentSetting}.json`)
             .then((response) => response.json())
             .then((json) => {
               items = getn(json);
