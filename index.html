@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SWE-Bench Test Generation: evaluating real world unit test generation capabilities">
+  <meta name="keywords" content="code, LLM, code generation, program synthesis">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TestGenEval: A Real World Test Generation Benchmark</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">TestGenEval: A Real World Unit Test Generation and Test Completion Benchmark</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://minimario.github.io/">Kush Jain</a><sup>1,2</sup>,</span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=CrSf2CQAAAAJ">Gabriel Synnaeve</a><sup>2</sup>,</span>
+                  <span class="author-block">
+                    <a href="https://scholar.google.com/citations?user=CrSf2CQAAAAJ">Baptiste Rozière</a><sup>3</sup>,</span>      
+            </div>
+  
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Carnegie Mellon University</span>
+              <span class="author-block"><sup>2</sup>Meta AI Research</span>
+            </div>
+  
+  
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                  <span class="link-block">
+                  <a href="https://arxiv.org/abs/2410.00752"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Paper</span>
+                  </a>
+                  </span>
+          
+                  <span class="link-block">
+                  <a href="https://github.com/facebookresearch/testgeneval"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                  </a>
+                  </span>
+          
+                  <span class="link-block">
+                  <a href="https://huggingface.co/datasets/kjain14/testgeneval"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="far fa-images"></i>
+                      </span>
+                      <span>HF Dataset</span>
+                  </a>
+                  </span>
+  
+                  <span class="link-block">
+                      <a href="./leaderboard.html"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fa fa-trophy"></i>
+                      </span>
+                      <span>Leaderboard</span>
+                  </a>
+                  </span>
+  
+                  <span class="link-block">
+                      <a href="./demo.html"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fas fa-search"></i>
+                      </span>
+                      <span>Sample Explorer</span>
+                  </a>
+                  </span>
+              </div>
+            </div>
+  
+            <br>
+            <img src="./images/examples.png" width="100%"/>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+            <span>
+                <a href="https://crux-eval.github.io/leaderboard" class="box is-large is-link is-rounded" style="background-color:aquamarine; display:inline-block; font-size:120%; margin-left:1em;">
+                    <span>🏆 CRUXEval Leaderboard 🏆</span>
+                </a>
+            </span>
+            <span>
+                <a href="https://crux-eval.github.io/demo" class="box is-large is-link is-rounded" style="background-color:aquamarine; display:inline-block; font-size:120%; margin-left:1em;">
+                    <span> Sample Explorer </span>
+                </a>
+            </span>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+<section class="section" style="margin:0; padding:0;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full">
+        <h2 class="title is-3">Motivation</h2>
+        <div class="content has-text-justified" style="font-size: 120%;">
+          <p>
+            The code LM community primarily relies on benchmarks like HumanEvalFix and TestEval, 
+            for measuring test generation capabilities. Unfortunately, common benchmarks
+            are often toy programs that do not capture the complexity of real world repositories.
+            We seek to adapt SWE-Bench into a test generation benchmark on more complex, real-world 
+            repositories. 
+          </p>
+
+          <p>
+            We design TestGenEval, a benchmark 
+            of 1210 Python test files and their corresponding code files. We measure a variety of metrics, 
+            including compile@k, pass@k and coverage improvement for generating the first test, last test and 
+            an additional test given the code under test. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="margin-bottom: 0; padding-bottom: 0;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">Benchmark Construction</h2>
+          <div class="content has-text-justified" style="font-size: 120%;">
+            <p>
+                The benchmark was constructed as follows:
+                <ol>
+                <li> First, we refine the dockerized version of SWE-Bench to include coverage dependencies and fix issues with the existing docker images. </li>
+                <li> We splice each test file into our 4 settings: only the code file, the preamble of the test file, the entire test file minus the last test and the entire file. </li>
+                <li> We measure coverage for each of these settings, filtering out examples where the coverage measurement fails. This leaves us with 1210 file pairs total. </li>
+                </ol>
+                Our refined docker images can be extended in other ways to improve test generation benchmarking.
+            </p>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <section class="section" style="margin-bottom: 0; padding-bottom: 0;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">Results</h2>
+          <div class="content has-text-justified" style="font-size: 120%;">
+            <p>
+                We run TestGenEval on a variety of SOTA models. These include popular open source models 
+                ranging from Llama 3.1 8B, 70B along with GPT-4o (the current SOTA closed source model).
+                For full test suite generation, Llama 3.1 405B has the highest pass@1, but interestingly still 
+                lower coverage than GPT-4o. This means that despite generating more passing tests, the tests generated
+                by Llama 3.1 405B tend to be lower quality than GPT-4o. This is also reflected by the higher mutation score
+                of GPT-4o generated test suites.
+            </p>
+          </div>
+          <img src="./images/fig1.png" width="90%"/>
+          <br>
+          <br> 
+          <div class="content has-text-justified" style="font-size: 120%;">
+            <p>
+              For test completion, we also observe a similar trend. Of all models, Codestral generates the most passing tests
+              for all three settings (with the exception of pass@1 for first test generation, where GPT-4 generates more passing test). 
+              However, similar to test generation, GPT-4o is able to achieve higher coverage than Codestral generated tests. This illustrates
+              that GPT-4o tests tend to be higher coverage than Codestral generated tests.
+            </p>
+          </div>
+          <img src="./images/fig2.png" width="75%"/>
+          <br>
+          <br> 
+        </div>
+      </div>
+  </section>
+
+  <section class="section" style="margin-bottom: 0; padding-bottom: 0;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full">
+          <h2 class="title is-3">Insights</h2>
+          <div class="content has-text-justified" style="font-size: 120%;">
+            <p>
+                We measure the correlation between TestGenEval and HumanEval, a popular code generation benchmark, and 
+                TestEval, a popular test generation benchmark. We find that there is a moderate positive correlation for both benchmarks, 
+                however there are some outliers: models such as Gemma 9B-it have trouble 
+                following the TestEval prompt, but do well on TestGenEval.
+            </p>
+          </div>
+          <img src="./images/fig4.png" width="75%"/>
+          <br>
+          <br> 
+          <div class="content has-text-justified" style="font-size: 120%;">
+            <p>
+              We also bucket common errors on TestGenEval. We find that models frequently fail to generate tests that 
+              follow the prompt format or have asserts. Other common errors include assert errors, timeout errors, and value errors.
+            </p>
+          </div>
+          <img src="./images/fig5.png" width="75%"/>
+          <br>
+          <br> 
+          <div class="content has-text-justified" style="font-size: 120%;">
+            <p>
+              Our benchmark also consists of many no solve problems and one solve problems. The figure shows an example of a 
+              no solve case, where generating a test requires additional file level context, or complex mocking of all the classes 
+              and methods invoked.
+            </p>
+          </div>
+          <img src="./images/fig6.png" width="85%"/>
+          <br>
+          <br> 
+        </div>
+      </div>
+      <div class="content has-text-justified" style="font-size: 120%;">
+        <p> <b>
+            Overall, we believe that TestGenEval introduces a new chapter in test generation evaluation! We
+             introduce the first test generation benchmark at the file level, across complex real world projects.
+        </b> </p>
+      </div>
+
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@misc{jain2024testgeneval,
+  title={TestGenEval: A Real World Unit Test Generation and Test Completion Benchmark}, 
+  author={Kush Jain and Gabriel Synnaeve and Baptiste Rozière},
+  year={2024},
+  journal = {arXiv preprint arXiv:2410.00752},
+}</code></pre>
+    </div>
+  </section>
+
+<footer class="footer">
+  <div class="container">
+    <!-- <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            The source code from this website is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">this template</a>!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

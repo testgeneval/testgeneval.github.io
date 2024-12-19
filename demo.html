@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TestGenEval Sample Explorer</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="shortcut icon" href="#" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/highlight.min.js"></script>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      pre {
+        padding: 0;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      .header, .buttons, .footer, .key {
+        flex-shrink: 0;
+      }
+      .header {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .footer {
+        padding: 10px;
+        font-size: 12px;
+      }
+      .scrollable-div {
+        height: calc(100vh - 460px);
+        overflow-y: auto;
+        background-color: #f5f5f5;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid black;
+      }
+      .buttons {
+        margin-top: 10px;
+      }
+      .btn {
+        margin-bottom: 7px;
+      }
+      .left-col {
+        width: 200px;
+      }
+      .left-half {
+        width: 50%;
+      }
+      .table {
+        background-color: #f5f5f5;
+      }
+      table tr, table td {
+        border: none !important;
+      }
+      .bottom-border {
+        border-bottom: 1px solid gray !important;
+      }
+      .generation {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .generation-icon {
+        margin-right: 5px;
+      }
+      .code-block {
+        background-color: #f8f8f8;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      code {
+        padding: 0;
+      }
+      details {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+      }
+      .md {
+        white-space: pre-wrap;
+      }
+      .code-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .syntax-string { color: green; }
+      .syntax-number { color: blue; }
+      .syntax-keyword { color: purple; font-weight: bold; }
+      .syntax-comment { color: gray; }
+      .syntax-function { color: orange; }
+    </style>
+  </head>
+  <body>
+    <div id="content" class="container-fluid d-flex flex-column align-items-center gap-3">
+      <h1 style="padding-top: 20px;" class="title is-1 publication-title">🔎 TestGenEval Sample Explorer 🔎</h1>
+      <h3 class="fw-light text-center title is-3"><small id="warning">TestGenEval is a benchmark measuring real world test generation capabilities!<br></small></h3>
+      <div class="column has-text-centered">
+        <div class="publication-links">
+          <span class="link-block">
+            <a href="./index.html"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fas fa-home"></i>
+                </span>
+                <span>Homepage</span>
+            </a>
+            </span>
+    
+            <span class="link-block">
+            <a href="https://arxiv.org/abs/2410.00752"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                </span>
+                <span>Paper</span>
+            </a>
+            </span>
+    
+            <span class="link-block">
+            <a href="https://github.com/facebookresearch/testgeneval"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
+            </a>
+            </span>
+    
+            <span class="link-block">
+            <a href="https://huggingface.co/datasets/kjain14/testgeneval"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="far fa-images"></i>
+                </span>
+                <span>HF Dataset</span>
+            </a>
+            </span>
+
+            <span class="link-block">
+                <a href="./leaderboard.html"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="fa fa-trophy"></i>
+                </span>
+                <span>Leaderboard</span>
+            </a>
+            </span>
+
+        </div>
+      </div>
+      <br>
+      <div class="container">
+        <div class="scrollable-div">
+          <table class="table">
+            <tr>
+              <td>
+                <label for="models">model:</label>
+                <select name="model-names" id="models">
+                  <option value="gpt-4o-2024-05-13">GPT-4o</option>
+                  <option value="Meta-Llama-3.1-405B-Instruct">Llama 3.1 405B</option>
+                  <option value="Meta-Llama-3.1-70B-Instruct">Llama 3.1 70B</option>
+                  <option value="CodeLlama-70b-Instruct-hf">CodeLlama 70B</option>
+                  <option value="gemma-2-27b-it">Gemma 2 27B</option>
+                  <option value="Codestral-22B-v0.1">Codestral 22B</option>
+                  <option value="DeepSeek-Coder-V2-Lite-Instruct">DeepSeekCoder 16B</option>
+                  <option value="Meta-Llama-3.1-8B-Instruct">Llama 3.1 8B</option>
+                  <option value="gemma-2-9b-it">Gemma 2 9B</option>
+                  <option value="CodeLlama-7b-Instruct-hf">CodeLlama 7B</option>
+                </select>
+                &nbsp; &nbsp;
+                <label for="temp-setting">temp & setting:</label>
+                <select name="temp-setting" id="temp-setting">
+                  <option value="0.2_full">0.2 - Full</option>
+                  <option value="0.2_first">0.2 - First</option>
+                  <option value="0.2_last">0.2 - Last</option>
+                  <option value="0.2_extra">0.2 - Extra</option>
+                  <option value="0.8_first">0.8 - First</option>
+                  <option value="0.8_last">0.8 - Last</option>
+                  <option value="0.8_extra">0.8 - Extra</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseCode" aria-expanded="true" aria-controls="collapseCode">
+                  Toggle Code
+                </button>
+                <div class="collapse show code-block" id="collapseCode">
+                  <code class="python"><pre id="code"></pre></code>
+                </div>
+                <br>
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTest" aria-expanded="true" aria-controls="collapseTest">
+                  Toggle Test
+                </button>
+                <div class="collapse code-block" id="collapseTest">
+                  <code class="python"><pre id="test_partial"></pre></code>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="left-half">
+                <b>Generations:</b>
+                <div id="generations"></div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="navigation-buttons text-center mt-3">
+          <button type="button" id="leftButton" class="btn btn-secondary">&lt;&lt;</button>
+          <button type="button" id="randButton" class="btn btn-secondary">??</button>
+          <button type="button" id="rightButton" class="btn btn-secondary">&gt;&gt;</button>
+          <div class="mt-2">
+            <span id="currentPage">1</span> / <span id="totalPages">4</span>
+          </div>
+        </div>
+        <div class="footer text-center mt-3">
+          The site is inspired by and based on <a href="https://minerva-demo.github.io">Minerva sample explorer</a> and <a href="https://llemma-demo.github.io/">Llemma</a>. Thanks!
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="testgeneval.js"></script>
+    <script>
+function syntaxHighlightPython(code) {
+  const escapeHtml = (unsafe) => {
+    return unsafe.replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+  }
+
+  const patterns = [
+    { regex: /(['"`])(\\?.)*?\1/g, className: 'syntax-string' }, // Strings
+    { regex: /\b\d+(\.\d+)?\b(?!;)/g, className: 'syntax-number' },   // Numbers
+    { regex: /\b(and|as|assert|async|await|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)\b/g, className: 'syntax-keyword' }, // Keywords
+    { regex: /#.*/g, className: 'syntax-comment' },              // Comments
+    { regex: /\b\w+(?=\()/g, className: 'syntax-function' }      // Function names
+  ];
+
+  code = escapeHtml(code);
+
+  patterns.forEach(pattern => {
+    code = code.replace(pattern.regex, match => `<span class="${pattern.className}">${match}</span>`);
+  });
+
+  return code;
+}
+
+      $(document).ready(function () {
+        let searchParams = new URLSearchParams(window.location.search);
+        let currentPage = 1;
+        if (searchParams.has("id")) {
+          currentPage = searchParams.get('id');
+        }
+        let currentModel = "gpt-4o-2024-05-13";
+        let currentTemp = "0.2";
+        let currentSetting = "full";
+        let totalPages = 1210;
+        data = DATA;
+        totalPages = data.length;
+        $("#totalPages").text(totalPages);
+        $("#currentPage").text(currentPage);
+        updateData(currentPage);
+        updateButtonStatus();
+        function updateData(idx) {
+          idx = idx - 1;
+          $("#code").html(syntaxHighlightPython(data[idx]["code"]));
+          if (currentSetting != "full") {
+            $("#test_partial").html(syntaxHighlightPython(data[idx][currentSetting]));
+          } else {
+            $("#test_partial").text("");
+          }
+          function getn(json) {
+            items = [];
+            for (var i = 0; i < json['raw_scored_generations']['sample_' + idx].length; i++) {
+              let si = json['raw_generations']['sample_' + idx][i];
+              let ci = json['raw_scored_generations']['sample_' + idx][i] ? "correct" : "incorrect";
+              let icon = ci === "correct" ? '<i class="fas fa-check-circle text-success generation-icon"></i>' : '<i class="fas fa-times-circle text-danger generation-icon"></i>';
+              items.push(`
+                <div class="code-block">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseGeneration${i}" aria-expanded="false" aria-controls="collapseGeneration${i}">
+                    Toggle Generation ${i + 1} ${icon}
+                  </button>
+                  <div class="collapse" id="collapseGeneration${i}">
+                    <code class="python"><pre>${syntaxHighlightPython(si)}</pre></code>
+                  </div>
+                </div>`);
+            }
+            return items;
+          }
+          console.log(`http://localhost:8000/evaluation_results/${currentModel}_temp${currentTemp}_${currentSetting}.json`);
+          fetch(`http://localhost:8000/evaluation_results/${currentModel}_temp${currentTemp}_${currentSetting}.json`)
+            .then((response) => response.json())
+            .then((json) => {
+              items = getn(json);
+              $("#generations").html(items.join(''));
+            });
+        }
+        function updateButtonStatus() {
+          if (currentPage <= 1) {
+            $("#leftButton").prop("disabled", true);
+          } else {
+            $("#leftButton").prop("disabled", false);
+          }
+          if (currentPage >= totalPages) {
+            $("#rightButton").prop("disabled", true);
+          } else {
+            $("#rightButton").prop("disabled", false);
+          }
+        }
+        updateButtonStatus();
+        $("#leftButton").click(function () {
+          if (currentPage > 1) {
+            currentPage--;
+            $("#currentPage").text(currentPage);
+            updateData(currentPage);
+          }
+          updateButtonStatus();
+        });
+        $("#randButton").click(function () {
+          currentPage = Math.floor(Math.random() * totalPages) + 1;
+          $("#currentPage").text(currentPage);
+          updateData(currentPage);
+        });
+        $("#rightButton").click(function () {
+          if (currentPage < totalPages) {
+            currentPage++;
+            $("#currentPage").text(currentPage);
+            updateData(currentPage);
+          }
+          updateButtonStatus();
+        });
+        $(document).keydown(function (e) {
+          switch (e.which) {
+            case 37:
+              if (currentPage > 1) {
+                currentPage--;
+                $("#currentPage").text(currentPage);
+                updateData(currentPage);
+              }
+              updateButtonStatus();
+              break;
+            case 39:
+              if (currentPage < totalPages) {
+                currentPage++;
+                $("#currentPage").text(currentPage);
+                updateData(currentPage);
+              }
+              updateButtonStatus();
+              break;
+            default:
+              return;
+          }
+          e.preventDefault();
+        });
+        $("#models").change(function () {
+          currentModel = $('#models').val();
+          updateData(currentPage);
+        });
+        $("#temp-setting").change(function () {
+          currVal = $('#temp-setting').val().split('_');
+          console.log(currVal)
+          currentTemp = currVal[0];
+          currentSetting = currVal[1];
+          updateData(currentPage);
+        });
+      });
+    </script>
+  </body>
+</html>

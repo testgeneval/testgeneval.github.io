@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="TestGenEval Leaderboard: evaluating unit test generation capabilities of code LMs">
+  <meta name="keywords" content="code, LLM, code generation, program synthesis">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TestGenEval Leaderboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<head>
+  <meta charset="UTF-8">
+  <title>TestGenEval Leaderboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
+  <!-- favicon.svg -->
+  <!-- <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👍</text></svg>"> -->
+  <!-- <link rel="icon" href="/favicon.svg" /> -->
+  <link rel="icon" href = "https://images.emojiterra.com/google/noto-emoji/unicode-15/color/1024px/1f9d1-1f4bb.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+
+  <style>
+    #content {
+      width: 75%;
+    }
+
+    th,
+    td {
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    #notes {
+      font-size: 1em;
+    }
+
+    #notes li {
+      font-size: 1.2em;
+      font-weight: 300;
+      margin: 1em;
+    }
+
+    .form-select {
+      font-size: 1em;
+    }
+
+    @media screen and (max-width: 1400px) {
+      body {
+        font-size: 1.6vw;
+      }
+
+      #content {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      h2 {
+        font-size: 1.6em;
+      }
+
+      h3 {
+        font-size: 1.2em;
+      }
+
+      table {
+        font-size: small;
+      }
+
+      
+    }
+
+
+  </style>
+</head>
+
+<body>
+  <div id="content" class="container-fluid d-flex flex-column align-items-center gap-3">
+    <h1 style="padding-top: 20px;" class="title is-1 publication-title">🏆 TestGenEval Leaderboard 🏆</h1>
+    <h3 class="fw-light text-center title is-3"><small id="warning">TestGenEval is an important benchmark for measuring unit test generation and test completion capabilities!<br></small></h2>
+      <div class="publication-links">
+        <span class="link-block">
+          <a href="./index.html"
+              class="external-link button is-normal is-rounded is-dark">
+              <span class="icon">
+                  <i class="fas fa-home"></i>
+              </span>
+              <span>Homepage</span>
+          </a>
+        </span>
+
+        <span class="link-block">
+        <a href="https://arxiv.org/abs/2410.00752"
+            class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="fas fa-file-pdf"></i>
+            </span>
+            <span>Paper</span>
+        </a>
+        </span>
+
+        <span class="link-block">
+        <a href="https://github.com/facebookresearch/testgeneval"
+            class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="fab fa-github"></i>
+            </span>
+            <span>Code</span>
+        </a>
+        </span>
+
+        <span class="link-block">
+        <a href="https://huggingface.co/datasets/kjain14/testgeneval"
+            class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="far fa-images"></i>
+            </span>
+            <span>HF Dataset</span>
+        </a>
+        </span>
+
+        <span class="link-block">
+            <a href="./demo.html"
+            class="external-link button is-normal is-rounded is-dark">
+            <span class="icon">
+                <i class="fas fa-search"></i>
+            </span>
+            <span>Sample Explorer</span>
+        </a>
+        </span>
+    </div>
+  </div>
+
+    <div class="container-fluid d-flex flex-row flex-nowrap">
+      <div class="container-fluid d-flex flex-column align-items-center">
+        <label for="fulltab" class="is-3" style="font-size: 180%;">TestGenEval Full</label>
+        <table id="fulltab" class="table table-responsive table-striped table-bordered flex-shrink-1 border border-success border-3"></table>
+      </div>
+      <div class="container-fluid d-flex flex-column align-items-center">
+        <label for="firsttab" class="is-3" style="font-size: 180%;">TestGenEval First</label>
+        <table id="firsttab" class="table table-responsive table-striped table-bordered flex-shrink-1 border border-info border-3"></table>
+      </div>
+    </div>
+
+    <div class="container-fluid d-flex flex-row flex-nowrap">
+      <div class="container-fluid d-flex flex-column align-items-center">
+        <label for="lasttab" class="is-3" style="font-size: 180%;">TestGenEval Last</label>
+        <table id="lasttab" class="table table-responsive table-striped table-bordered flex-shrink-1 border border-info border-3"></table>
+      </div>
+      <div class="container-fluid d-flex flex-column align-items-center">
+        <label for="extratab" class="is-3" style="font-size: 180%;">TestGenEval Extra</label>
+        <table id="extratab" class="table table-responsive table-striped table-bordered flex-shrink-1 border border-info border-3"></table>
+      </div>
+    </div>
+
+    <section class="section" style="margin:0; padding:0;">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-full">
+              <h2 class="title is-3">📝 Notes</h2>
+              <div class="content has-text-justified" style="font-size: 120%;">
+                <p>
+                    1. All samples are generated from scratch using our <a href="">codebase</a>, where the raw generations can also be found.
+                    <br>
+                    2. The pass@1 metric is reported with T=0.2, and the pass@5, coverage and mutation score metrics are reported witih T=0.8, with 5 samples each. Models are ranked by pass@1.
+                    <br>
+                    3. Prompts can be found <a href="">here</a>, and generations not following the format are considered incorrect. A different set of prompts were used for the paper, causing the slight difference in numbers.
+                </p>
+              </div>
+            </div>
+          </div>
+      </section>
+
+      <section class="section" style="margin:0; padding:0;">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-full">
+              <h2 class="title is-3">🤗 Acknowlegement and More Leaderboards</h2>
+              <div class="content has-text-justified" style="font-size: 120%;">
+                <p>
+                    We greatly thank the authors of the <a href="https://github.com/evalplus/evalplus.github.io">EvalPlus</a> leaderboard for allowing us to borrow their leaderboard code! 
+                    
+                    We also recommend the following leaderboards for measuring code LM ability on various coding tasks, such as 
+                    <a href="https://evalplus.github.io/leaderboard.html">EvalPlus Leaderboard</a>,
+                    <a href="https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard">Chatbot Arena Leaderboard</a>,
+                    <a href="https://huggingface.co/spaces/bigcode/bigcode-models-leaderboard">BigCode Models Leaderboard</a>,
+                    <a href="https://infi-coder.github.io/inficoder-eval/">InfiCoder-Eval</a>, and
+                    <a href="https://leaderboard.tabbyml.com/">TabbyML Leaderboard</a>.
+                </p>
+              </div>
+            </div>
+          </div>
+      </section>
+  </div>
+
+
+  <script>
+    const fullTab = document.getElementById('fulltab');
+    const firstTable = document.getElementById('firsttab');
+    const lastTable = document.getElementById('lasttab');
+    const extraTable = document.getElementById('extratab');
+
+    const benchmarkRadio = document.getElementById('Benchmark');
+    
+    var data = [];
+
+    var currentUrl = 'http://localhost:8000/data.csv';
+
+    updateTable(fullTab, currentUrl, 'cov', 'fu@1', true);
+    updateTable(firstTable, currentUrl, 'f@1', 'f@5', false);
+    updateTable(lastTable, currentUrl, 'l@1', 'l@5', false);
+    updateTable(extraTable, currentUrl, 'e@1', 'e@5', false);
+
+    function clearTable() {
+      fulltab.innerHTML = '';
+      firsttab.innerHTML = '';
+      lasttab.innerHTML = '';
+      extratab.innerHTML = '';
+    }
+
+    function updateTable(table, url, sortColumn, otherColumn, isFull) {
+      clearTable();
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function (results) {
+          results.data.sort(function (a, b) {
+            return parseFloat(b[sortColumn]) - parseFloat(a[sortColumn]);
+          });
+          displayTable(table, results.data, sortColumn, otherColumn, isFull);
+        }
+      });
+    }
+
+    function displayTable(table, data, displayColumn1, displayColumn2, isFull){
+      var thead = document.createElement('thead');
+      var headerRow = document.createElement('tr');
+      // add rank
+      var th = document.createElement('th');
+      th.textContent = '#';
+      headerRow.appendChild(th);
+      // headers
+      const theaders = isFull ? ['Model', 'coverage', 'pass@1'] : ['Model', 'pass@1', 'pass@5'];
+      theaders.forEach(function (header) {
+        var th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      var tbody = document.createElement('tbody');
+      // add rank
+      var rank = 1;
+      data.forEach(function (row) {
+        var dataRow = document.createElement('tr');
+        var rankCell = document.createElement('td');
+        rankCell.textContent = rank;
+        dataRow.appendChild(rankCell);
+        var modelCell = document.createElement('td');
+        if (rank == 1) {
+          modelCell.textContent = '🥇 ';
+        } else if (rank == 2) {
+          modelCell.textContent = '🥈 ';
+        } else if (rank == 3) {
+          modelCell.textContent = '🥉 ';
+        } else {
+          modelCell.textContent = '';
+        }
+        rank++;
+
+        var modelLink = document.createElement('a');
+        modelLink.href = row['link'];
+        modelLink.textContent = row['Model'];
+        modelLink.classList.add('link-underline-primary');
+        modelLink.classList.add('text-nowrap');
+        modelCell.appendChild(modelLink);
+        modelCell.classList.add('d-flex');
+        modelCell.classList.add('flex-nowrap');
+        dataRow.appendChild(modelCell);
+
+        var pass1Cell = document.createElement('td');
+        pass1Cell.textContent += row[displayColumn1];
+        dataRow.appendChild(pass1Cell);
+
+        var pass5Cell = document.createElement('td');
+        pass5Cell.textContent += row[displayColumn2];
+        dataRow.appendChild(pass5Cell);
+
+        tbody.appendChild(dataRow);
+      });
+      table.appendChild(tbody);
+    }
+  </script>
+
+</body>
+
+</html>
